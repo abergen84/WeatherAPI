@@ -15,10 +15,13 @@
             // start app?
         var options = {api_key: "251a327b65c598a3b6842fa35513c058"};
 
-        var cities = [ {city: "Houston", latitude: "29.7628", longitude: "-95.3831"},
-                       {city: "Seattle", latitude: "47.6097", longitude: "-122.3331"} ];
+        var Houston = {latitude: "29.7628", longitude: "-95.3831"};
+        var Seattle = {latitude: "47.6097", longitude: "-122.3331"};
+        var Los_Angeles = {latitude: "34.0500", longitude: "-118.2500"};
 
-                       console.log(cities);
+        var cities = [Houston, Seattle, Los_Angeles];
+
+        console.log(cities);
 
         var rain = new Weather(options);
 
@@ -49,6 +52,8 @@
     Weather.prototype.pullWeatherData = function() {
         "use strict";
 
+        var input = this.createInputArray();
+
         return $.getJSON(this.complete_url).then(function(data){
             
             console.log(data);
@@ -69,19 +74,42 @@
     Weather.prototype.drawWeatherData = function(data, html){
         "use strict";
 
-        document.querySelector('#weather').innerHTML = //function(x){
+        document.querySelector('#weather').innerHTML = 
                 _.template(html, data);
-        //};
     };
 
-    //Weather.prototype.createInputObject = 
+    Weather.prototype.createInputArray = function(){
+        "use strict";
+
+        var input = {};
+        $(':input').each(function(){
+            input[this.name] = this.value;
+        });
+        console.log(input);
+        return input;
+    };
+
+    // Weather.prototype.compareInputToCities = function(){
+    //     "use strict";
+
+    //     //var x = this.createInputArray();
+
+    //     cities.city.forEach(function(x){
+    //         if(x === cities.city){
+    //             console.log(x);
+    //             return x;
+    //         } else {
+    //             console.alert("This city does not exist in the database");
+    //         }
+    //     });
+    // };
 
     Weather.prototype.Routing = function(){
         "use strict";
 
         var self = this;
 
-        Path.map("#/").to(function(){
+        Path.map("#/results").to(function(){
                 $.when(self.pullWeatherData(),
                        self.loadTemplate("weather")
                 ).then(function(){
@@ -93,6 +121,16 @@
     Path.listen();
 
     };
+
+
+
+    //Notes:
+    //
+    //What i want this mini project to do:
+    //
+    //When you input a city in form, have it compare to a list of pre-set major cities defined at beginning and spit the weather out based on that city (i.e. based on latitude/longitude)
+    //Based on the weather, spit out a picture of a sun, cloudy, rain/thunder, etc.
+    //And lastly, make it look pretty.
 
 
     

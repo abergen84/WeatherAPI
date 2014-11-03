@@ -15,13 +15,9 @@
             // start app?
         var options = {api_key: "251a327b65c598a3b6842fa35513c058"};
 
-        var Houston = {latitude: "29.7628", longitude: "-95.3831"};
-        var Seattle = {latitude: "47.6097", longitude: "-122.3331"};
-        var Los_Angeles = {latitude: "34.0500", longitude: "-118.2500"};
+        var cities = {Houston: "29.7628,-95.3831", Seattle: "47.6097,-122.3331", LA: "34.0500,-118.2500"};
 
-        var cities = [Houston, Seattle, Los_Angeles];
-
-        console.log(cities);
+        console.dir(cities);
 
         var rain = new Weather(options);
 
@@ -54,7 +50,10 @@
 
         var input = this.createInputArray();
 
-        return $.getJSON(this.complete_url).then(function(data){
+        console.log(input);
+        console.log(this.cities);
+
+        return $.getJSON(this.base_url + this.api_key + "/" + this.cities[input] + "?callback=?").then(function(data){
             
             console.log(data);
             
@@ -81,9 +80,9 @@
     Weather.prototype.createInputArray = function(){
         "use strict";
 
-        var input = {};
+        var input = [];
         $(':input').each(function(){
-            input[this.name] = this.value;
+            input = this.value;
         });
         console.log(input);
         return input;

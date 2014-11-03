@@ -3,9 +3,30 @@
     <head>
         <link rel="stylesheet" type="text/css" href="./bower_components/normalize.css/normalize.css">
         <link rel="stylesheet" type="text/css" href="./bower_components/typeplate-starter-kit/css/typeplate.css">
-        <title></title>
+        <link rel="stylesheet" type="text/css" href="./dist/style.css">
+        <title>Weather API</title>
     </head>
     <body>
+        
+    <div class="container">
+
+    <div class="header">
+        <img src="http://fc09.deviantart.net/fs28/i/2008/082/f/a/Dark_cloud_stock_01_by_sweetemotions_stock.jpg">
+    </div>
+    
+    <div>
+    <form id="cityinput">
+        <input type="text" name="city" placeholder="Input your city">
+        <input type="submit" value="Submit">
+    </form>
+    </div>
+
+    <div id="weather"></div>
+    <div></div>
+
+    </div>
+
+
         <script type="text/javascript" src="./bower_components/Loader/loader.js" id="loaderjs" data-app="./js/app.js"></script>
     </body>
     </html>

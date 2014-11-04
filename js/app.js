@@ -15,10 +15,6 @@
             // start app?
         var options = {api_key: "251a327b65c598a3b6842fa35513c058"};
 
-        var cities = {Houston: "29.7628,-95.3831", Seattle: "47.6097,-122.3331", LA: "34.0500,-118.2500"};
-
-        console.dir(cities);
-
         var rain = new Weather(options);
 
 
@@ -32,6 +28,7 @@
             throw new Error ("You need a proper API key");
         }
 
+        this.cities = {Houston: "29.7628,-95.3831", Seattle: "47.6097,-122.3331", LA: "34.0500,-118.2500"};
         this.base_url = "https://api.forecast.io/forecast/";
         this.api_key = options.api_key;
         this.latitude = "29.7628";

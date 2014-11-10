@@ -7,7 +7,7 @@
 
 function WeatherClient(){
         
-    
+   
         // if(!options.api_key){
         //     throw new Error ("You need a proper API key");
         // }
@@ -33,6 +33,7 @@ var WeatherView = Backbone.View.extend({
 
 	initalize: function(opts){
 
+console.log(opts);
 		this.options = _.extend(
 			{},
 			{ $container: $('body') },
@@ -44,7 +45,7 @@ var WeatherView = Backbone.View.extend({
 		this.render();
 	},
 
-	template: "<h6>{currently.summary}</h6>",
+	template: "<h6>{daily.summary}</h6>",
 	
 	render: function(){		
 		this.el.innerHTML = _.template(this.template, this.model);
@@ -55,7 +56,7 @@ var WeatherView = Backbone.View.extend({
 var WeatherListing = Backbone.Model.extend({
 
 	initalize: function(opts){
-
+console.log(opts);
 		this.view = new WeatherView({model: this});
 	}
 });
@@ -92,7 +93,8 @@ var WeatherListings = Backbone.Collection.extend({
 	},
 
 	parse: function(data){
-		return data.results;
+		console.log(data);
+		return data.daily;
 	}
 });
 

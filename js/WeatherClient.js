@@ -1,13 +1,13 @@
-(function(window, undefined){
-	"use strict";
+(function(window, undefined) {
+    "use strict";
 
 
-//var options = {api_key: "251a327b65c598a3b6842fa35513c058"};
+    //var options = {api_key: "251a327b65c598a3b6842fa35513c058"};
 
 
-function WeatherClient(){
-        
-   
+    function WeatherClient() {
+
+
         // if(!options.api_key){
         //     throw new Error ("You need a proper API key");
         // }
@@ -27,99 +27,94 @@ function WeatherClient(){
 
     }
 
-var WeatherView = Backbone.View.extend({
-	tagname: "div",
-	className: "weather",
+    var WeatherView = Backbone.View.extend({
+        tagname: "div",
+        className: "weather",
 
-	initalize: function(opts){
+        initialize: function(opts) {
+            this.options = _.extend({}, {
+                    $container: $('body')
+                },
+                opts
+            );
 
-console.log(opts);
-		this.options = _.extend(
-			{},
-			{ $container: $('body') },
-			opts
-			);
+            this.options.$container.append(this.el);
 
-		this.options.$container.append(this.el);
+            this.render();
+        },
 
-		this.render();
-	},
+        template: "<h6>{summary}</h6>",
 
-	template: "<h6>{daily.summary}</h6>",
-	
-	render: function(){		
-		this.el.innerHTML = _.template(this.template, this.model);
-	}
+        render: function() {
+            this.el.innerHTML = _.template(this.template, this.model.attributes);
+        }
 
-});
+    });
 
-var WeatherListing = Backbone.Model.extend({
+    var WeatherListing = Backbone.Model.extend({
+        initialize: function(opts) {
+            this.view = new WeatherView({
+                model: this
+            });
+        }
+    });
 
-	initalize: function(opts){
-console.log(opts);
-		this.view = new WeatherView({model: this});
-	}
-});
+    var WeatherListings = Backbone.Collection.extend({
 
-var WeatherListings = Backbone.Collection.extend({
+        CreateInputObject: function() {
+            var input = {};
+            $(':input').each(function() {
+                input = this.value;
+            });
 
-	CreateInputObject: function(){
-		var input = {};
-		$(':input').each(function(){
-			input = this.value;
-		});
-		console.log(input);
+            return input;
+        },
 
-		return input;
-	},
+        model: WeatherListing,
 
-	model: WeatherListing,
+        apikey: "251a327b65c598a3b6842fa35513c058",
 
-	apikey: "251a327b65c598a3b6842fa35513c058",
+        cities: {
+            Houston: "29.7628,-95.3831",
+            Seattle: "47.6097,-122.3331",
+            LA: "34.0500,-118.2500"
+        },
 
-	cities: {Houston: "29.7628,-95.3831", Seattle: "47.6097,-122.3331", LA: "34.0500,-118.2500"},
+        url: function() {
+            return [
+                "https://api.forecast.io/forecast/",
+                this.apikey,
+                "/",
+                this.cities[this.city],
+                "?callback=?"
+            ].join('');
+        },
 
-	url: function(){
+        parse: function(data) {
+            return data.daily.data;
+        }
+    });
 
-		var input = this.CreateInputObject();
+    //var listings = new weatherListings();
 
-		return [
-			"https://api.forecast.io/forecast/",
-			this.apikey,
-			"/",
-			this.cities[input],
-			"?callback=?"
-		].join('');
-	},
-
-	parse: function(data){
-		console.log(data);
-		return data.daily;
-	}
-});
-
-//var listings = new weatherListings();
-
-WeatherClient.prototype.Routing = function(){
+    WeatherClient.prototype.Routing = function() {
 
         var self = this;
 
-        Path.map("#/results").to(function(){
-                
-                self.weatherCollection.fetch();
+        Path.map("#/:name").to(function() {
+            self.weatherCollection.city = this.params.name;
+            self.weatherCollection.fetch();
         });
 
-    Path.root("#/");
-    Path.listen();
+        Path.root("#/");
+        Path.listen();
 
     };
 
 
-window.WeatherClient = WeatherClient;
+    window.WeatherClient = WeatherClient;
 
-}) (window, undefined);
-    
-
+})(window, undefined);
 
 
 
@@ -129,80 +124,74 @@ window.WeatherClient = WeatherClient;
 
 
 
+// Weather.prototype.pullWeatherData = function() {
+//     "use strict";
+
+//     var input = this.createInputArray();
+
+//     console.log(input);
+//     console.log(this.cities);
+
+//     return $.getJSON(this.base_url + this.api_key + "/" + this.cities[input] + "?callback=?").then(function(data){
+
+//         console.log(data);
+
+//         return data;
+//     });
+// };
+
+// Weather.prototype.loadTemplate = function(template){
+//     "use strict";
+
+//     return $.get("./templates/" + template + ".html").then(function(htmlString){
+//         return htmlString;
+//     });
+// };
 
 
-    // Weather.prototype.pullWeatherData = function() {
-    //     "use strict";
+// Weather.prototype.drawWeatherData = function(data, html){
+//     "use strict";
 
-    //     var input = this.createInputArray();
+//     document.querySelector('#weather').innerHTML = 
+//             _.template(html, data);
+// };
 
-    //     console.log(input);
-    //     console.log(this.cities);
+// Weather.prototype.createInputArray = function(){
+//     "use strict";
 
-    //     return $.getJSON(this.base_url + this.api_key + "/" + this.cities[input] + "?callback=?").then(function(data){
-            
-    //         console.log(data);
-            
-    //         return data;
-    //     });
-    // };
+//     var input = [];
+//     $(':input').each(function(){
+//         input = this.value;
+//     });
+//     console.log(input);
+//     return input;
+// };
 
-    // Weather.prototype.loadTemplate = function(template){
-    //     "use strict";
+// Weather.prototype.compareInputToCities = function(){
+//     "use strict";
 
-    //     return $.get("./templates/" + template + ".html").then(function(htmlString){
-    //         return htmlString;
-    //     });
-    // };
+//     //var x = this.createInputArray();
 
-
-    // Weather.prototype.drawWeatherData = function(data, html){
-    //     "use strict";
-
-    //     document.querySelector('#weather').innerHTML = 
-    //             _.template(html, data);
-    // };
-
-    // Weather.prototype.createInputArray = function(){
-    //     "use strict";
-
-    //     var input = [];
-    //     $(':input').each(function(){
-    //         input = this.value;
-    //     });
-    //     console.log(input);
-    //     return input;
-    // };
-
-    // Weather.prototype.compareInputToCities = function(){
-    //     "use strict";
-
-    //     //var x = this.createInputArray();
-
-    //     cities.city.forEach(function(x){
-    //         if(x === cities.city){
-    //             console.log(x);
-    //             return x;
-    //         } else {
-    //             console.alert("This city does not exist in the database");
-    //         }
-    //     });
-    // };
-
- 
+//     cities.city.forEach(function(x){
+//         if(x === cities.city){
+//             console.log(x);
+//             return x;
+//         } else {
+//             console.alert("This city does not exist in the database");
+//         }
+//     });
+// };
 
 
 
 
 
-    //Notes:
-    //
-    //What i want this mini project to do:
-    //
-    //When you input a city in form, have it compare to a list of pre-set major cities defined at beginning and spit the weather out based on that city (i.e. based on latitude/longitude)
-    //Based on the weather, spit out a picture of a sun, cloudy, rain/thunder, etc.
-    //And lastly, make it look pretty.
 
 
-    
-    
+//Notes:
+//
+//What i want this mini project to do:
+//
+//When you input a city in form, have it compare to a list of pre-set major cities defined at beginning and spit the weather out based on that city (i.e. based on latitude/longitude)
+//Based on the weather, spit out a picture of a sun, cloudy, rain/thunder, etc.
+//And lastly, make it look pretty.

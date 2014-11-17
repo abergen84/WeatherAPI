@@ -2,30 +2,31 @@
     "use strict";
 
 
-    //var options = {api_key: "251a327b65c598a3b6842fa35513c058"};
-
-
     function WeatherClient() {
 
-
-        // if(!options.api_key){
-        //     throw new Error ("You need a proper API key");
-        // }
-
-        // this.cities = {Houston: "29.7628,-95.3831", Seattle: "47.6097,-122.3331", LA: "34.0500,-118.2500"};
-        // this.base_url = "https://api.forecast.io/forecast/";
-        // this.api_key = options.api_key;
-        // this.latitude = "29.7628";
-        // this.longitude = "-95.3831";
-        // this.complete_url = this.base_url + this.api_key + "/" + this.latitude + "," + this.longitude + "?callback=?";
-
-        // console.log(this.complete_url);
-
-        this.weatherCollection = new WeatherListings();
-
-        this.Routing();
+        this.Routing = new WeatherRouting();
 
     }
+        	
+    var AppView = Backbone.View.extend({
+    	el: document.querySelector('body'),
+
+    	initialize: function(){
+    		this.weatherCollection = new WeatherListings();
+
+    	},
+
+    	// events: {
+    	// 	"submit form" : "search"
+    	// },
+
+    	// search: function(event){
+    	// 	event.preventDefault();
+    	// 	$('#weather').html("");
+    	// 	this.weatherCollection.startRequest();
+    	// }
+
+    });
 
     var WeatherView = Backbone.View.extend({
         tagname: "div",
@@ -59,58 +60,67 @@
         }
     });
 
+    var Geolocation = Backbone.Model.extend({
+    	initialize: function(){
+    		navigator.geolocation.getCurrentPosition(showmap);
+
+    		function showmap(p){
+    			console.log(p);
+    		
+    		return [p.coords.longitude,p.coords.latitude];
+    		}
+    	}
+    });
+
     var WeatherListings = Backbone.Collection.extend({
 
-        CreateInputObject: function() {
-            var input = {};
-            $(':input').each(function() {
-                input = this.value;
-            });
-
-            return input;
-        },
+        // CreateInputObject: function() {
+        //     var input = [];
+        //     $(':input').each(function() {
+        //         input = this.value;
+        //     });
+        //     console.log(input);
+        //     return input;
+        // },
 
         model: WeatherListing,
 
         apikey: "251a327b65c598a3b6842fa35513c058",
 
-        cities: {
-            Houston: "29.7628,-95.3831",
-            Seattle: "47.6097,-122.3331",
-            LA: "34.0500,-118.2500"
-        },
-
         url: function() {
+           console.log(this.apikey); 
             return [
                 "https://api.forecast.io/forecast/",
                 this.apikey,
                 "/",
-                this.cities[this.city],
+                this.Geolocation.initialize(),
                 "?callback=?"
             ].join('');
+        
+        console.log(url);
         },
 
         parse: function(data) {
             return data.daily.data;
-        }
+        },
+
+        // startRequest: function(){
+        // 	if(this.CreateInputObject().city){
+        // 		console.log(this.fetch);
+        // 		return this.fetch();
+        // 	}
+        // }
     });
 
-    //var listings = new weatherListings();
+    var WeatherRouting = Backbone.Router.extend({
+    	initialize: function(){
+    	this.appView = new AppView();
+    	this.geoLocation = new Geolocation();
+    	Backbone.history.start();
+    }
 
-    WeatherClient.prototype.Routing = function() {
-
-        var self = this;
-
-        Path.map("#/:name").to(function() {
-            self.weatherCollection.city = this.params.name;
-            self.weatherCollection.fetch();
-        });
-
-        Path.root("#/");
-        Path.listen();
-
-    };
-
+    });
+   
 
     window.WeatherClient = WeatherClient;
 
@@ -122,6 +132,48 @@
 
 
 
+
+
+
+
+
+
+    // function WeatherClient() {
+
+
+        // if(!options.api_key){
+        //     throw new Error ("You need a proper API key");
+        // }
+
+        // this.cities = {Houston: "29.7628,-95.3831", Seattle: "47.6097,-122.3331", LA: "34.0500,-118.2500"};
+        // this.base_url = "https://api.forecast.io/forecast/";
+        // this.api_key = options.api_key;
+        // this.latitude = "29.7628";
+        // this.longitude = "-95.3831";
+        // this.complete_url = this.base_url + this.api_key + "/" + this.latitude + "," + this.longitude + "?callback=?";
+
+        // console.log(this.complete_url);
+
+    //     this.weatherCollection = new WeatherListings();
+
+    //     this.Routing();
+
+    // }
+
+
+ // WeatherClient.prototype.Routing = function() {
+
+    //     var self = this;
+
+    //     Path.map("#/:name").to(function() {
+    //         self.weatherCollection.city = this.params.name;
+    //         self.weatherCollection.fetch();
+    //     });
+
+    //     Path.root("#/");
+    //     Path.listen();
+
+    // };
 
 
 // Weather.prototype.pullWeatherData = function() {
@@ -183,6 +235,11 @@
 // };
 
 
+// cities: {
+        //     Houston: "29.7628,-95.3831",
+        //     Seattle: "47.6097,-122.3331",
+        //     LA: "34.0500,-118.2500"
+        // },
 
 
 

@@ -61,15 +61,16 @@
     });
 
     var Geolocation = Backbone.Model.extend({
-    	initialize: function(){
-    		navigator.geolocation.getCurrentPosition(showmap);
 
-    		function showmap(p){
-    			console.log(p);
-    		
-    		return [p.coords.longitude,p.coords.latitude];
-    		}
+    	getGeo: function(){
+    		var promise = $.Deferred();
+    		navigator.geolocation.getCurrentPosition(function(){
+    			var p = arguments[0];
+    			promise.resolve([p.coords.latitude,p.coords.longitude]);
+    		});
+    		return promise;
     	}
+
     });
 
     var WeatherListings = Backbone.Collection.extend({
@@ -87,13 +88,13 @@
 
         apikey: "251a327b65c598a3b6842fa35513c058",
 
-        url: function() {
+        url: function(coordinates) {
            console.log(this.apikey); 
             return [
                 "https://api.forecast.io/forecast/",
                 this.apikey,
                 "/",
-                this.Geolocation.initialize(),
+                coordinates,
                 "?callback=?"
             ].join('');
         

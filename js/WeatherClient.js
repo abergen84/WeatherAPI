@@ -2,11 +2,11 @@
         "use strict";
 
 
-var AppView = Backbone.View.extend({
-    el: document.querySelector('body'),
+var AppView = Backbone.View.extend({     //called below under Router
+    el: document.querySelector('body'),  //the first element in the document's "body" is returned
 
     initialize: function() {
-        this.weatherCollection = new WeatherListings();
+        this.weatherCollection = new WeatherListings();  //new instance of WeatherListings called upon initialize
     }
 
 });
@@ -76,7 +76,7 @@ var WeatherListings = Backbone.Collection.extend({
 
     initialize: function(){
     	var self = this;
-    	this.geoLocation = (new Geolocation()).getGeo().then(function(location){
+    	this.geoLocation = (new Geolocation()).getGeo().then(function(location){ //calling the instance of Geolocation above
 	    	self.long = location[0];
     		self.lat = location[1];
 
@@ -96,7 +96,7 @@ var WeatherListings = Backbone.Collection.extend({
 
 var WeatherRouting = Backbone.Router.extend({
     initialize: function() {
-        this.appView = new AppView();
+        this.appView = new AppView();  //create a new instance of AppView upon initialize
 	    Backbone.history.start();
     }
 

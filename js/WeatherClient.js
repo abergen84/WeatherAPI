@@ -1,12 +1,6 @@
-(function(window, undefined) {
+(function(window, undefined) {  //creating a function for undefined so it cannot be easily manipulated later, and window is made local
         "use strict";
 
-
-function WeatherClient() {
-
-    this.Routing = new WeatherRouting();
-
-}
 
 var AppView = Backbone.View.extend({
     el: document.querySelector('body'),
@@ -93,7 +87,8 @@ var WeatherListings = Backbone.Collection.extend({
     },
 
     parse: function(data) {
-        return data.daily.data;
+    	console.log(data);
+        return data.daily;  //have to parse the data in order for it to be retrieved. within data.daily is {summary}, which i am templating
     },
 
 
@@ -108,7 +103,7 @@ var WeatherRouting = Backbone.Router.extend({
 });
 
 
-window.WeatherClient = WeatherClient;
+window.WeatherRouting = WeatherRouting;
 
 })(window, undefined);
 

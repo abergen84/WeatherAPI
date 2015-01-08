@@ -16,7 +16,7 @@
 
             // start app?
         
-        var client = new WeatherClient();
+        var routing = new WeatherRouting();
 
         });
     }

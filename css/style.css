@@ -1,4 +1,20 @@
-img {
-	max-width: 50%;
-	max-height: 50%;
+html {
+    background: url('http://fc09.deviantart.net/fs28/i/2008/082/f/a/Dark_cloud_stock_01_by_sweetemotions_stock.jpg') no-repeat center center;
+    /*background-size: cover;*/
+    background-attachment: fixed;
+}
+
+body {
+	/*transition: opacity .25s ease;*/
+    background-color: transparent;
+}
+
+h2, h3, h6 {
+	text-align: center;
+	color: white;
+}
+
+#weather {
+	border-color: white;
+	border-radius: 10px;
 }

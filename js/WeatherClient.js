@@ -27,11 +27,24 @@ var WeatherView = Backbone.View.extend({
         this.render();
     },
 
-    template: "<h6>{summary}</h6>",
+    template: "<h3>OVERALL FORECAST</h3> <h6>{daily.summary}</h6> <br> <h3>TEMPERATURE</h3> <h6>{currently.temperature} F</h6> <br> <h3>CURRENTLY</h3> <h6>{daily.icon}</h6>",
 
     render: function() {
         this.el.innerHTML = _.template(this.template, this.model.attributes);
     }
+
+    // template: "weather",
+
+    //     render: function(){
+    //         var self = this;
+    //         $.get("./templates/" + this.template + ".html").then(function(template) {
+    //             self.el.innerHTML = _.template(template, self.model);
+    //         })
+    //     },
+
+    //     initialize: function(){
+    //         this.render();
+    //     }
 
 });
 
@@ -88,7 +101,7 @@ var WeatherListings = Backbone.Collection.extend({
 
     parse: function(data) {
     	console.log(data);
-        return data.daily;  //have to parse the data in order for it to be retrieved. within data.daily is {summary}, which i am templating
+        return data;  //have to parse the data in order for it to be retrieved. within data.daily is {summary}, which i am templating
     },
 
 

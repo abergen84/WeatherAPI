@@ -1,20 +1,41 @@
+@import url(http://fonts.googleapis.com/css?family=Lato:100,300,400);
+
 html {
-    background: url('http://fc09.deviantart.net/fs28/i/2008/082/f/a/Dark_cloud_stock_01_by_sweetemotions_stock.jpg') no-repeat center center;
+    /*background: url('http://fc09.deviantart.net/fs28/i/2008/082/f/a/Dark_cloud_stock_01_by_sweetemotions_stock.jpg') no-repeat center center;*/
     /*background-size: cover;*/
     background-attachment: fixed;
+    background-color: #0ac5f4;
+    text-align: center;
 }
 
 body {
 	/*transition: opacity .25s ease;*/
-    background-color: transparent;
+    /*background-color: transparent;*/
 }
 
-h2, h3, h6 {
-	text-align: center;
+h2 {
+	font-family: "Lato";
+	font-weight: 100;
+	color: white;
+	font-size: 6rem;
+}
+
+h3 {
+	font-family: "Lato";
+	font-weight: 100;
 	color: white;
 }
 
-#weather {
-	border-color: white;
-	border-radius: 10px;
+h6 {
+	font-family: "Lato";
+	font-weight: 100;
+	color: white;
+}
+
+.weather {
+	padding-top: 3rem;	
+}
+
+.borderheader {
+	border: 1px solid white;
 }
